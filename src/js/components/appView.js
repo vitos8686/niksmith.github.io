@@ -45,12 +45,21 @@ class AppView extends React.Component{
     onError (err) {}
     onClose () {}
     addUser (user) {
+        let now = new Date().getTime();
         let userList = this.state.userList;
         if (!userList[user.id]) {
             userList[user.id] = {
                 name: user.name
             };
         }
+        userList[user.id].expire = now;
+
+        for (let id in userList) {
+            if (now - userList[id].expire > 10000) {
+                delete userList[id];
+            }
+        }
+
         this.setState({
             userList: userList
         });
