@@ -37,14 +37,14 @@ class AppView extends React.Component{
     }
 
     onOpen () {
-        setTimeout(() => {
+        setInterval(() => {
             this.getUserList();
-        }, 5000);
+        }, 10000);
         this.getUserList ();
     }
     onError (err) {}
     onClose () {}
-    addUser (user) {
+    updateUserList (user) {
         let now = new Date().getTime();
         let userList = this.state.userList;
         if (!userList[user.id]) {
@@ -59,7 +59,6 @@ class AppView extends React.Component{
                 delete userList[id];
             }
         }
-
         this.setState({
             userList: userList
         });
@@ -81,7 +80,6 @@ class AppView extends React.Component{
                 history.push(result);
 
                 this.setState({history: history});
-
                 break;
 
             case 'getUserList':
@@ -94,7 +92,7 @@ class AppView extends React.Component{
                 break;
 
             case 'userList':
-                this.addUser(result.from);
+                this.updateUserList(result.from);
                 break
         }
 
@@ -123,7 +121,7 @@ class AppView extends React.Component{
 
     componentWillMount () {
         let userName = prompt('Укажите свое имя?');
-        userName = userName || 'New User';
+        userName = (userName || 'New User').substr(0, 30);
         this.setState({
             user: {
                 name: userName,
